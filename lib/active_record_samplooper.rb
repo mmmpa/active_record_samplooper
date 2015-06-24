@@ -1,0 +1,2 @@
+module ActiveRecordSamplooper
+end

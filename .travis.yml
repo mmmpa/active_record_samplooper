@@ -1,0 +1,23 @@
+language: ruby
+rvm:
+  - 2.0.0
+  - 2.1.5
+  - 2.2.2
+env:
+  - DB=sqlite
+before_install:
+  - gem install bundler -v 1.10.3
+install:
+  - bundle install --without production --deployment
+cache:
+  directories:
+    - vendor/bundle
+before_script:
+  - cp spec/dummy/config/database.def.yml spec/dummy/config/database.yml
+script:
+  - cd spec/dummy
+  - bundle exec rake db:create RAILS_ENV=test
+  - bundle exec rake db:migrate RAILS_ENV=test
+  - bundle exec rake db:test:prepare
+  - cd ../../
+  - bundle exec rake
