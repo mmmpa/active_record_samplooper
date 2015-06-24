@@ -20,12 +20,19 @@ RSpec.describe SampleModel, type: :model do
       end
     end
 
-    describe 'sampler sample' do
+
+    describe 'from sampler' do
       let(:sampler) { SampleModel.sampler }
 
+      describe 'sampler pick' do
+        it 'any times, get SampleModel instance' do
+          36.times { expect(sampler.sample).to be_a(SampleModel) }
+        end
+      end
+
       it 'sample get once each' do
-        10.times { expect(sampler.sample).to be_a(SampleModel) }
-        expect(sampler.sample).to be_nil
+        10.times { expect(sampler.pick).to be_a(SampleModel) }
+        expect(sampler.pick).to be_nil
       end
 
       it 'loop get any times each' do
@@ -41,7 +48,7 @@ RSpec.describe SampleModel, type: :model do
         SampleModel.first.destroy
         SampleModel.first.destroy
         expect {
-          10.times { sampler.sample }
+          10.times { sampler.pick }
         }.to raise_exception(ActiveRecordSamplooper::Gone)
       end
 
@@ -53,8 +60,16 @@ RSpec.describe SampleModel, type: :model do
           10.times { sampler.loop }
         }.to raise_exception(ActiveRecordSamplooper::Gone)
       end
+
+      it 'sampler not include new instance' do
+        sampler
+        new_id = create(:sample_model).id
+        1000.times { expect(sampler.sample.id).not_to eq(new_id) }
+        SampleModel.destroy(new_id)
+      end
     end
   end
+
 
   describe 'no record' do
     it 'direct sample get nil' do
@@ -64,11 +79,11 @@ RSpec.describe SampleModel, type: :model do
     let(:sampler) { SampleModel.sampler }
 
     it 'sampler sample get nil' do
-      expect(sampler.sample).to be_nil
+      expect(sampler.pick).to be_nil
     end
 
     it 'sampler loop get nil' do
-      expect(sampler.sample).to be_nil
+      expect(sampler.pick).to be_nil
     end
   end
 end

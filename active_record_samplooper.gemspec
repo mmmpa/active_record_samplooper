@@ -9,9 +9,9 @@ Gem::Specification.new do |spec|
   spec.version     = ActiveRecordSamplooper::VERSION
   spec.authors     = ["mmmpa"]
   spec.email       = ["mmmpa.mmmpa@gmail.com"]
-  spec.homepage    = "TODO"
-  spec.summary     = "TODO: Summary of ActiveRecordSamplooper."
-  spec.description = "TODO: Description of ActiveRecordSamplooper."
+  spec.homepage    = "http://mmmpa.net"
+  spec.summary     = "Sample a instance from ActiveRecord directory."
+  spec.description = "Sample a instance from ActiveRecord directory."
   spec.license     = "MIT"
 
   spec.files         = `git ls-files`.split("\n")

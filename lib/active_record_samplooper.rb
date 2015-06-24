@@ -17,15 +17,25 @@ module ActiveRecordSamplooper
 
     def initialize(klass)
       self.klass = klass
-      reset!
+      init!
+    end
+
+
+    def find(id)
+      klass.find(id)
+    rescue ActiveRecord::RecordNotFound => e
+      raise Gone, id
     end
 
 
     def sample
+      find(id_store.sample)
+    end
+
+
+    def pick
       return if rest.blank?
-      klass.find(id = rest.shift)
-    rescue ActiveRecord::RecordNotFound => e
-      raise Gone, id
+      find(rest.shift)
     end
 
 
@@ -35,8 +45,13 @@ module ActiveRecordSamplooper
     end
 
 
-    def reset!
+    def init!
       self.id_store = klass.pluck(:id).shuffle!
+      self.rest = id_store.dup
+    end
+
+
+    def reset!
       self.rest = id_store.dup
     end
   end
