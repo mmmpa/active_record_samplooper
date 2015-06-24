@@ -8,7 +8,7 @@ env:
 before_install:
   - gem install bundler -v 1.10.3
 install:
-  - bundle install --without production --deployment
+  - bundle install
 cache:
   directories:
     - vendor/bundle
@@ -16,7 +16,7 @@ before_script:
   - cp spec/dummy/config/database.def.yml spec/dummy/config/database.yml
 script:
   - cd spec/dummy
-  - bundle install --without production --deployment
+  - bundle install
   - bundle exec rake db:create RAILS_ENV=test
   - bundle exec rake db:migrate RAILS_ENV=test
   - bundle exec rake db:test:prepare
