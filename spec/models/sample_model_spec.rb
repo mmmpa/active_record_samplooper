@@ -65,7 +65,6 @@ RSpec.describe SampleModel, type: :model do
         sampler
         new_id = create(:sample_model).id
         1000.times { expect(sampler.sample.id).not_to eq(new_id) }
-        SampleModel.destroy(new_id)
       end
     end
   end

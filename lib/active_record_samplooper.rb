@@ -47,7 +47,7 @@ module ActiveRecordSamplooper
 
     def init!
       self.id_store = klass.pluck(:id).shuffle!
-      self.rest = id_store.dup
+      reset!
     end
 
 
