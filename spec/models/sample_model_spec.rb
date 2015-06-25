@@ -18,6 +18,10 @@ RSpec.describe SampleModel, type: :model do
       it 'any times, get SampleModel instance' do
         36.times { expect(SampleModel.sample).to be_a(SampleModel) }
       end
+
+      it 'get SampleModel instance from relation' do
+        expect(SampleModel.select(:id, :name).sample).to be_a(SampleModel)
+      end
     end
 
 

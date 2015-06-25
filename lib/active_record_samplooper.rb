@@ -69,7 +69,7 @@ end
 class ::ActiveRecord::Base
   class << self
     def sample
-      offset(rand(count)).first
+      offset(rand(count(:all))).first
     end
 
 
