@@ -27,6 +27,7 @@ module ActiveRecordSamplooper
 
 
     def find(id)
+      raise ActiveRecord::RecordNotFound unless id
       array[id - 1] || raise(Gone, id)
     end
 
@@ -47,27 +48,24 @@ module ActiveRecordSamplooper
 
 
     def find(id)
-      raise Gone, id unless id
       klass.find(id)
     rescue ActiveRecord::RecordNotFound => e
       raise Gone, id
     end
 
 
-    def sample
-      find(id_store.sample)
+    def sample(count = 1)
+      count > 1 ? count.times.map { do_sample } : do_sample
     end
 
 
-    def pick
-      return if rest.blank?
-      find(rest.shift)
+    def pick(count = 1)
+      count > 1 ? count.times.map { do_pick } : do_pick
     end
 
 
-    def loop
-      reset! if rest.blank?
-      sample
+    def loop(count = 1)
+      count > 1 ? count.times.map { do_loop } : do_loop
     end
 
 
@@ -80,6 +78,25 @@ module ActiveRecordSamplooper
     def reset!
       self.rest = id_store.dup
     end
+
+
+    private
+    def do_sample
+      find(id_store.sample)
+    end
+
+
+    def do_pick
+      return if rest.blank?
+      find(rest.shift)
+    end
+
+
+    def do_loop
+      reset! if rest.blank?
+      pick
+    end
+
   end
 
   class Gone < StandardError

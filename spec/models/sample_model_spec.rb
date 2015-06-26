@@ -59,7 +59,7 @@ RSpec.describe SampleModel, type: :model do
       it 'loop get destroyed raise exception' do
         sampler
         SampleModel.first.destroy
-        SampleModel.first.destroy
+        SampleModel.last.destroy
         expect {
           10.times { sampler.loop }
         }.to raise_exception(ActiveRecordSamplooper::Gone)
