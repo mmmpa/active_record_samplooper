@@ -25,7 +25,7 @@ SampleModel.sample(3)
 SampleModel.where(gender: :male).sample(10).map{|m| [m.first_name, m.gender].join(' : ')}
 => ["洋介 : male", "勇一 : male", "良介 : male", "晃司 : male", "仁晶 : male", "良介 : male", "一樹 : male", "明 : male", "禄郎 : male", "晃司 : male"]
 ```
-ただしダイレクトに`sample`するより[Samplooper](#Samplooper)を介した方がよさそう。
+ただしダイレクトに`sample`するより[Samplooper](#samplooper)を介した方がよさそう。
 
 ## Installation
 ```ruby
