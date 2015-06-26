@@ -118,13 +118,18 @@ end
 
 class ::ActiveRecord::Base
   class << self
-    def sample
-      offset(rand(count(:all))).first
+    def sample(count = 1)
+      count > 1 ? count.times.map { do_sampling } : do_sampling
     end
 
 
     def sampler
       ActiveRecordSamplooper.(self)
+    end
+
+    private
+    def do_sampling
+      offset(rand(count(:all))).first
     end
   end
 end
