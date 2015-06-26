@@ -34,7 +34,7 @@ RSpec.describe SampleModel, type: :model do
         end
       end
 
-      it 'sample get once each' do
+      it 'pick get once each' do
         10.times { expect(sampler.pick).to be_a(SampleModel) }
         expect(sampler.pick).to be_nil
       end
@@ -69,6 +69,32 @@ RSpec.describe SampleModel, type: :model do
         sampler
         new_id = create(:sample_model).id
         1000.times { expect(sampler.sample.id).not_to eq(new_id) }
+      end
+
+      context 'fixnum parameter get multiple element' do
+        it 'pick(n) get multiple element' do
+          re = sampler.pick(3)
+          expect(re.size).to eq(3)
+          re.each do |element|
+            expect(element).to be_a(SampleModel)
+          end
+        end
+
+        it 'loop(n) get multiple element' do
+          re = sampler.loop(3)
+          expect(re.size).to eq(3)
+          re.each do |element|
+            expect(element).to be_a(SampleModel)
+          end
+        end
+
+        it 'sample(n) get multiple element' do
+          re = sampler.sample(3)
+          expect(re.size).to eq(3)
+          re.each do |element|
+            expect(element).to be_a(SampleModel)
+          end
+        end
       end
     end
   end

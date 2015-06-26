@@ -55,17 +55,17 @@ module ActiveRecordSamplooper
 
 
     def sample(count = 1)
-      count > 1 ? count.times.map { do_sample } : do_sample
+      count > 1 ? count.times.map { do_sampling } : do_sampling
     end
 
 
     def pick(count = 1)
-      count > 1 ? count.times.map { do_pick } : do_pick
+      count > 1 ? count.times.map { do_picking } : do_picking
     end
 
 
     def loop(count = 1)
-      count > 1 ? count.times.map { do_loop } : do_loop
+      count > 1 ? count.times.map { do_looping } : do_looping
     end
 
 
@@ -76,23 +76,23 @@ module ActiveRecordSamplooper
 
 
     def reset!
-      self.rest = id_store.dup
+      self.rest = id_store.dup.shuffle
     end
 
 
     private
-    def do_sample
+    def do_sampling
       find(id_store.sample)
     end
 
 
-    def do_pick
+    def do_picking
       return if rest.blank?
       find(rest.shift)
     end
 
 
-    def do_loop
+    def do_looping
       reset! if rest.blank?
       pick
     end
