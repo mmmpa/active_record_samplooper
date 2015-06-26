@@ -89,4 +89,53 @@ RSpec.describe SampleModel, type: :model do
       expect(sampler.pick).to be_nil
     end
   end
+
+  describe 'array samplooper' do
+    let(:array) { (:a..:f).to_a }
+
+    describe 'from sampler' do
+      let(:sampler) { array.sampler }
+
+      describe 'sampler pick' do
+        it 'any times, get SampleModel instance' do
+          36.times { expect(sampler.sample).to be_a(Symbol) }
+        end
+      end
+
+      it 'sample get once each' do
+        6.times { expect(sampler.pick).to be_a(Symbol) }
+        expect(sampler.pick).to be_nil
+      end
+
+      it 'loop get any times each' do
+        100.times do
+          all = (:a..:f).to_a if all.blank?
+
+          expect(all.delete(sampler.loop)).not_to be_nil
+        end
+      end
+
+      it 'sample get destroyed raise exception' do
+        array[4] = nil
+        sampler
+        expect {
+          7.times { sampler.pick }
+        }.to raise_exception(ActiveRecordSamplooper::Gone)
+      end
+
+      it 'loop get destroyed raise exception' do
+        array[4] = nil
+        sampler
+        expect {
+          7.times { sampler.loop }
+        }.to raise_exception(ActiveRecordSamplooper::Gone)
+      end
+
+      it 'sampler not include new instance' do
+        sampler
+        array.push(:aa)
+        1000.times { expect(sampler.sample).not_to eq(:aa) }
+      end
+    end
+  end
 end

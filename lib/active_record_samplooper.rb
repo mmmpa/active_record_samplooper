@@ -10,6 +10,31 @@ module ActiveRecordSamplooper
     end
   end
 
+  class ArrayLooper
+    attr_accessor :array
+
+
+    class << self
+      def call(*args)
+        new(*args)
+      end
+    end
+
+
+    def initialize(array)
+      self.array = array.dup
+    end
+
+
+    def find(id)
+      array[id - 1] || raise(Gone, id)
+    end
+
+
+    def pluck(*)
+      (1..array.size).to_a
+    end
+  end
 
   class Samplooper
     attr_accessor :klass, :id_store, :rest
@@ -22,6 +47,7 @@ module ActiveRecordSamplooper
 
 
     def find(id)
+      raise Gone, id unless id
       klass.find(id)
     rescue ActiveRecord::RecordNotFound => e
       raise Gone, id
@@ -65,6 +91,13 @@ module ActiveRecordSamplooper
     end
   end
 end
+
+class ::Array
+  def sampler
+    ActiveRecordSamplooper.(ActiveRecordSamplooper::ArrayLooper.(self))
+  end
+end
+
 
 class ::ActiveRecord::Base
   class << self
