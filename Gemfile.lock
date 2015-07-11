@@ -2,7 +2,7 @@ PATH
   remote: .
   specs:
     active_record_samplooper (0.0.6)
-      rails (~> 4.2.1)
+      rails
 
 GEM
   remote: https://rubygems.org/
